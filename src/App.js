@@ -1,24 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import thunk from 'redux-thunk';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
-function App() {
+import Pages from './pages';
+import Reducers from './app/reducers';
+import { ScrollToTop } from './app/common/utils';
+
+const middleware = [thunk];
+const store = createStore(Reducers, composeWithDevTools(applyMiddleware(...middleware)));
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <Router>
+        <ScrollToTop>
+          <Pages />
+        </ScrollToTop>
+      </Router>
+    </Provider>
   );
 }
 
